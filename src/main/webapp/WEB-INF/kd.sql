@@ -24,22 +24,17 @@ CREATE TABLE IF NOT EXISTS `board_info` (
   `BI_NUM` int(11) NOT NULL AUTO_INCREMENT,
   `BI_TITLE` varchar(400) NOT NULL,
   `BI_CONTENT` text NOT NULL,
-  `BI_WRITER` varchar(30) NOT NULL,
+  `BI_WRITER` int(11) NOT NULL,
   `BI_CREDAT` timestamp NOT NULL,
   `BI_CNT` int(11) NOT NULL,
-  PRIMARY KEY (`BI_NUM`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`BI_NUM`),
+  KEY `FK_UI_NUM` (`BI_WRITER`),
+  CONSTRAINT `FK_UI_NUM` FOREIGN KEY (`BI_WRITER`) REFERENCES `user_info` (`UI_NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 테이블 데이터 kd.board_info:~8 rows (대략적) 내보내기
+-- 테이블 데이터 kd.board_info:~1 rows (대략적) 내보내기
 INSERT INTO `board_info` (`BI_NUM`, `BI_TITLE`, `BI_CONTENT`, `BI_WRITER`, `BI_CREDAT`, `BI_CNT`) VALUES
-	(2, '명관이 정처기 필ㄷㄷ기 합격', '			명관이 정처기 필기 합격기원합니다 아멘\r\n	ㄹㄷㄹㅈㄷㄹㅈ		', '이보성ㅈㅈ', '2023-07-10 07:08:00', 1),
-	(3, '첫번째 게시물', '냉무', '글쓴이', '2023-07-13 08:37:54', 0),
-	(4, 'adasd', 'null', 'rtughj', '2023-07-13 07:08:22', 4),
-	(5, 'qwe', 'null', 'qwe', '2023-07-14 01:30:44', 1),
-	(6, 'ㅂㅈㄷㅂㅈㄱㄱ', '			ㅂㅈㄷㅂㅈㄷㅈㅂㄷㅂㅈㄷ			null\r\n		454545	\r\n			', 'ㅂㅈㄷㅂㅈㄷ', '2023-07-14 01:31:11', 1),
-	(7, '이원기 베스트', '원기는 베스트 나이스 최고', '이보성', '2023-07-14 03:03:30', 1),
-	(8, '일기', '안녕안녕안녕하세요\r\n			', '안녕하세요', '2023-07-14 03:04:52', 1),
-	(9, '이명관 화이팅', '이명관 화이팅 정처기 꼭 떨어져리', '이왕균', '2023-07-14 03:05:18', 1);
+	(10, 'TEST', '			ASD\r\n			', 12, '2023-07-17 04:58:57', 0);
 
 -- 테이블 kd.class_info 구조 내보내기
 CREATE TABLE IF NOT EXISTS `class_info` (
@@ -49,17 +44,7 @@ CREATE TABLE IF NOT EXISTS `class_info` (
   PRIMARY KEY (`CI_NUM`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 테이블 데이터 kd.class_info:~9 rows (대략적) 내보내기
-INSERT INTO `class_info` (`CI_NUM`, `CI_NAME`, `CI_DESC`) VALUES
-	(1, '이보성', 'QWEASDZXC'),
-	(2, '이원기', 'sd'),
-	(3, 'asdf', 'null'),
-	(4, '이보성', '나는 열심히 하겠습니다'),
-	(5, '이명관', '정처기 황ㅌㅇ'),
-	(6, '이왕귬', 'ㅗㅗㅗㅗㅗㅗㅗ'),
-	(7, '이왕귬', 'ㅗㅗㅗㅗㅗㅗㅗ'),
-	(8, '이왕귬', 'ㅗㅗㅗㅗㅗㅗㅗ'),
-	(9, '이왕귬3123', 'ㅗㅗㅗㅗㅗㅗㅗ123');
+-- 테이블 데이터 kd.class_info:~0 rows (대략적) 내보내기
 
 -- 테이블 kd.market_info 구조 내보내기
 CREATE TABLE IF NOT EXISTS `market_info` (
@@ -73,6 +58,23 @@ CREATE TABLE IF NOT EXISTS `market_info` (
 -- 테이블 데이터 kd.market_info:~1 rows (대략적) 내보내기
 INSERT INTO `market_info` (`MK_NUM`, `MK_NAME`, `MK_TYPE`, `MK_PRICE`) VALUES
 	(1, '사과', '과일', 1000);
+
+-- 테이블 kd.movie_info 구조 내보내기
+CREATE TABLE IF NOT EXISTS `movie_info` (
+  `MI_NUM` int(11) NOT NULL AUTO_INCREMENT COMMENT '영화 번호',
+  `MI_TITLE` varchar(200) NOT NULL COMMENT '영화 제목',
+  `MI_DIRECTOR` varchar(30) NOT NULL COMMENT '감독',
+  `MI_DESC` varchar(4000) NOT NULL COMMENT '영화 설명',
+  `MI_GENRE` varchar(100) NOT NULL COMMENT '영화 장르',
+  `MI_CREDAT` datetime DEFAULT current_timestamp() COMMENT '상영일',
+  `MI_CNT` int(11) DEFAULT 0 COMMENT '관객수',
+  PRIMARY KEY (`MI_NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- 테이블 데이터 kd.movie_info:~2 rows (대략적) 내보내기
+INSERT INTO `movie_info` (`MI_NUM`, `MI_TITLE`, `MI_DIRECTOR`, `MI_DESC`, `MI_GENRE`, `MI_CREDAT`, `MI_CNT`) VALUES
+	(3, '명관이의 꿈', '이원기', '명관이의 꿈은 원기와 행복하게 사는 것이랍니다~', '공포', '2023-07-17 17:38:40', 0),
+	(4, '원기의 장래희망', '이보성', '강원기가 되눈것이 꿈인 원기', '드라마', '2023-07-17 17:39:07', 0);
 
 -- 테이블 kd.user_info 구조 내보내기
 CREATE TABLE IF NOT EXISTS `user_info` (

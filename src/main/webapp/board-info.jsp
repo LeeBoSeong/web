@@ -13,6 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="/include/header.jsp"/>
 <%
 String myTitle = request.getParameter("myTitle");
 if(myTitle != null && myTitle.length() != 0){
@@ -20,13 +21,12 @@ if(myTitle != null && myTitle.length() != 0){
 	String myText = request.getParameter("myText");
 	out.print("내용 : " + myText);
 	String myName = request.getParameter("myName");
-	SimpleDateFormat myTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	String myCnt = request.getParameter("myCnt");
 
 	Connection con = DBCon.getCon();
 	Statement stmt = con.createStatement();
 	String sql = "INSERT INTO BOARD_INFO(BI_TITLE, BI_CONTENT, BI_WRITER, BI_CREDAT, BI_CNT)";
-	sql += "values ('"+myTitle +"','" + myText+"','"+myName+"','"+myTime+"','"+myCnt+"')";
+	sql += "values ('"+myTitle +"','" + myText+"','"+myName+"', now(),'"+myCnt+"')";
 	int result = stmt.executeUpdate(sql);
 	if(result == 1){
 		%>
@@ -43,13 +43,11 @@ if(myTitle != null && myTitle.length() != 0){
 		<label for="myTitle">제목</label>
 		<input type= "text" id="myTl" name="myTitle"><br>
 		<label for="mtText">게시글 작성</label>
-		<input type = "text" id="myTxt" name="mtText"><br>
+		<input type = "text" id="myText" name="mtText"><br>
 		<label for="writer">작성자</label>
 		<input type="text" id="writer" name="myName"><br>
 		<label for="cnt">조회수</label>
 		<input type="text" id="cnt" name="myCnt"><br>
-		
-		
 		<button>등록</button>
 	</form>
 </body>

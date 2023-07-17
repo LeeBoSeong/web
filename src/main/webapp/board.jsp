@@ -26,7 +26,7 @@
 	<table border="1">
 		<tr>
 			<th>번호</th>
-			<th>제모</th>
+			<th>제목</th>
 			<th>작성자</th>
 			<th>조회수</th>
 		</tr>

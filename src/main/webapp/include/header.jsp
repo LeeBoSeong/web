@@ -7,5 +7,5 @@ String root = request.getContextPath();
 	<a href = "<%=root %>/">Home</a>
 	<a href = "<%=root %>/login.jsp">Login</a>
 	<a href = "<%=root %>/join.jsp">Join</a>
-	<a href = "<%=root %>/board.jsp">Board</a>
+	<a href = "<%=root %>/board/board-list.jsp">Board</a>
 </div>

@@ -1,3 +1,4 @@
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.Statement"%>
@@ -13,6 +14,12 @@
 </head>
 <body>
 <jsp:include page="/include/header.jsp"/>
+<form>
+<input type="text" placeholder="제목" name="biTitle" id="biTitle" value="<%=request.getParameter("biTitle")==null?"":request.getParameter("biTitle")%>">
+<input type="text" placeholder="글쓴이" name="biWriter" id="biWriter" value="<%=request.getParameter("biWriter")==null?"":request.getParameter("biWriter")%>">
+<input type="text" placeholder="내용" name="biContent" id="biContent" value="<%=request.getParameter("biContent")==null?"":request.getParameter("biContent")%>">
+<button>검색</button>
+</form>
 <table border = "1">
 	<tr>
 		<th>번호</th>
@@ -20,28 +27,62 @@
 		<th>작성자</th>
 		<th>작성일</th>
 		<th>조회수</th>
+		<th>삭제</th>
 	</tr>
 	
 
 <%
 Connection con = DBCon.getCon();
-Statement stmt = con.createStatement();
-String sql = "SELECT BI_NUM, BI_TITLE, BI_WRITER, BI_CREDAT, BI_CNT FROM BOARD_INFO";
-ResultSet rs = stmt.executeQuery(sql);
+
+String sql = "SELECT bi.*, UI.UI_NAME FROM board_info bi";
+sql += " INNER JOIN user_info UI ON BI.BI_WRITER = UI.UI_NUM WHERE 1=1 ";
+String biTitle = request.getParameter("biTitle")==null?"":request.getParameter("biTitle");
+String biWriter = request.getParameter("biWriter")==null?"":request.getParameter("biWriter");
+String biContent = request.getParameter("biContent")==null?"":request.getParameter("biContent");
+
+
+int cnt = 0;
+if(!biTitle.isEmpty()){
+	sql += " AND BI_TITLE LIKE CONCAT('%',?,'%')";
+	cnt++;
+}
+if(!biWriter.isEmpty()){
+	sql += " AND BI_WRITER LIKE CONCAT('%',?,'%')";
+	cnt++;
+}
+if(!biContent.isEmpty()){
+	sql += " AND BI_CONTENT LIKE CONCAT('%',?,'%')";
+	cnt++;
+}
+
+
+PreparedStatement ps = con.prepareStatement(sql);
+
+if(!biContent.isEmpty()) {
+	ps.setString(cnt--,biContent);
+}
+if(!biWriter.isEmpty()) {
+	ps.setString(cnt--,biWriter);
+}
+if(!biTitle.isEmpty()) {
+	ps.setString(cnt--,biTitle);
+}
+ResultSet rs = ps.executeQuery();
 while(rs.next()){
 %>
 	<tr>
 		<td><%=rs.getInt("BI_NUM")%></td>
 		<td><a href="<%=root%>/board/board-view.jsp?biNum=<%=rs.getInt("BI_NUM")%>"><%=rs.getString("BI_TITLE")%></a></td>
-		<td><%=rs.getString("BI_WRITER")%></td>
+		<td><%=rs.getString("UI_NAME")%></td>
 		<td><%=rs.getString("BI_CREDAT")%></td>
 		<td><%=rs.getInt("BI_CNT")%></td>
+		<td><button type="button" onclick="location.href='<%=root%>/board/board-delete-ok.jsp?biNum=<%=rs.getInt("BI_NUM")%>'">삭제</button></td>
 	</tr>
 <%
 }
 %>
 	<tr>
-		<td colspan="5" align="right"><button onclick="location.href='/web/board/board-insert.jsp'">등록</button></td>	
+		<td colspan="6" align="right"><button onclick="location.href='/web/board/board-insert.jsp'">등록</button></td>	
 	</tr>
 </table>
 </body>

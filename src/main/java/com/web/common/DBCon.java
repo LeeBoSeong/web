@@ -6,10 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBCon {
-	private static final String URL = "jdbc:mariadb://localhost:3307/kd";
+	private static final String URL = "jdbc:mariadb://localhost:3306/kd"; //집: 3306 , 학교:3307
 	private static final String DRIVER_NAME= "org.mariadb.jdbc.Driver";
 	private static final String USER = "root";
-	private static final String PASSWORD = "kd1824java";
+	private static final String PASSWORD = "ll09130731";// 집:ll09130731, 학교: kd1824java
 	
 	static {
 		try {

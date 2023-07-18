@@ -19,8 +19,8 @@ public class TestServlet extends HttpServlet {
 		String uri = request.getRequestURI();
 		System.out.println(uri);
 		int idx = uri.lastIndexOf("/");
-		uri = uri.substring(idx+1);
-		String url = "/WEB-INF/views/test/";
+		uri = uri.substring(idx);
+		String url = "/WEB-INF/views/test/    ";
 		if("list".equals(uri)){
 			url+= "test-list.jsp";
 		}
